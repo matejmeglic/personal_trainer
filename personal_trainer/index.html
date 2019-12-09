@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <script src="https://kit.fontawesome.com/78e9f04d4f.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="./dist/final.css">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+        <title>Personal fitness trainer</title>
+    </head>
+    <body>
+    <div id="main_container" class="container">
+        <h1><i class="fas fa-weight"></i> Personal fitness (con)trainer</h1>
+        <div class="row">
+            <div class="col-6">
+                <div id="container-food">
+                    <p>Insert your meal:</p>
+                    <input type="date" id="date_time" class="form-control" placeholder="dd/mm/yyyy">
+                    <input type="text" id="food_intake" class="form-control" placeholder="Food">
+                    <input type="text" id="kcal" class="form-control" placeholder="Kcal">
+                    <button id="btn_save">Save</button>
+                    <p id="meal_result"></p>
+                </div>
+                <div id="container-show">
+                        <p>Want to check your day?</p>
+                        <input type="date" name id="date_input" class="form-control" placeholder="dd/mm/yyyy">
+                        <button id="btn_show">Show</button>
+                        <p id="food_results"></p>
+                    </div>
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <p>Insert your personal data:</p>
+                    <input type="date" name id="date_itm" class="form-control" value="dd/mm/yyyy">
+                    <input type="text" id="weight_user" class="form-control" placeholder="Weight">
+                    <input type="text" id="height_user" class="form-control" placeholder="Height">
+                    <button id="btn_itm">Calculate and store ITM</button>
+                    <p id="itm_results"></p>
+                </div>
+                <br></br>
+                <div class="row">
+                    <div id="graph_results"><canvas id="myChart" width="570" height="400"></canvas></div>
+                    
+                    <img src="./dist/itm_table.jpg" width="500px">
+                </div>
+            </div>
+        </div>
+    </div>
+    <button id="btn_load">Load dummy data</button>       
+    <!-- JavaScript files (must be at the end of body!) -->
+    <script src="./dist/final.js"></script>
+ 
+
+    
+    
+    </body>
+</html>
