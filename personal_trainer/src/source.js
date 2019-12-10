@@ -103,7 +103,9 @@ function meal_input() {
     meal_result.innerText = `Your meal ${var_food_intake.value} ${var_kcal.value} was successfully stored in DB.`;
     
     // run meals_output and show results from localStorage alongside with saved meal
-    meals_output(var_date_time.value)
+    if (var_date_time.value == date_input.value) {  //byZiga: added this check to not run function if not necessary (only change meal output if same day was already picked for meal output)
+        meals_output()  //byZiga: here I removed date in brackets because it caused adding meals from different days together
+    }
 };
 
 // Ziga
@@ -112,45 +114,64 @@ function meal_input() {
 //declaration
 let btn_show = document.getElementById("btn_show");
 let date_input = document.getElementById("date_input");
-food_input = JSON.parse(localStorage.getItem("meal"));
+
+//byZiga: here I removed "food_input = JSON..."   and put it inside function (and also renamed variable to food_consumed to not mess with values in food_input function)
+
+//byZiga: set default date for meal output to today   (as seen on Stackoverflow)
+date_input.valueAsDate = new Date();
+
 
 //button and function that lists all meals from local storage
 btn_show.addEventListener("click", function() {meals_output()});
+date_input.addEventListener("change", function() {meals_output()}); //byZiga: show meal output allready when date is picked (user doesnt have to click "show" button) 
 
 //2019-12-08 changed to standalone function for easier calling outside the button
-function meals_output(meal_input_date) {
+function meals_output() {       //byZiga: removed date in brackets because function added meals from different days together
+    let food_consumed = JSON.parse(localStorage.getItem("meal")); //byZiga: var renamed + must be moved inside function, otherwise "TypeError:food_input is null" when user tries to input meal when cache is cleared
+        //by Ziga: previousy this variable was named food_input, but had to be renamed, otherwise problems when cache cleared (it caused input meals to stop working)
     let food_results = document.getElementById("food_results");
     let kcal_counter = 0;
     food_results.innerHTML = "";
-    food_input.forEach(function(item) {
     
-//list meals with selected date
-    if (item.date_time === date_input.value || item.date_time === meal_input_date) { // 2019-12-08 MM added additional processing if I pass date from meal_input() that pushes .value already 
-        let food_item= document.createElement("p")
-        food_item.innerText=(item.food_intake + "  =  " + item.kcal + "kalorij")
-        food_results.appendChild(food_item);
-        kcal_counter +=Number(item.kcal); // converts string to number as item.kcal is parsed from JSON
+    //by Ziga: must check first if cache isnt empty (otherwise problems, if bad user wants to see meal output even before he put in anything)
+    if (localStorage.getItem("meal") == undefined) {
+        food_results.innerHTML = "No meals registered any day yet."
     }  
-})
+    else {
+        food_consumed.forEach(function(item) {      //byZiga: changed var name here to not change value of food_input, which was causing problems if var was empty (if cache was empty)
+        
+            //list meals with selected date
+            if (item.date_time === date_input.value) { // 2019-12-08 MM added additional processing if I pass date from meal_input() that pushes .value already 
+                    //byZiga: removed second condition, because it added meals from different days together
+                let food_item= document.createElement("p")
+                food_item.innerText=(item.food_intake + "  =  " + item.kcal + "kalorij")
+                food_results.appendChild(food_item);
+                kcal_counter +=Number(item.kcal); // converts string to number as item.kcal is parsed from JSON
+            }  
+        })
 
- // 2019-12-08 MM - added total kcal counter
- if (kcal_counter !== 0) {
- let kcal_total = document.createElement("p");
- kcal_total.innerText=`Total: ${kcal_counter} kcal.`;
- food_results.appendChild(kcal_total);
- }
+        // 2019-12-08 MM - added total kcal counter
+        if (kcal_counter !== 0) {
+        let kcal_total = document.createElement("p");
+        kcal_total.innerText=`Total: ${kcal_counter} kcal.`;
+        food_results.appendChild(kcal_total);
+        }
 
-// after listing check food_results div and if no results, show No results text
-//2019-12-08 MM removed LET and declared variable inside the function above
-food_results = document.getElementById("food_results");
+        // after listing check food_results div and if no results, show No results text
+        //2019-12-08 MM removed LET and declared variable inside the function above
+        food_results = document.getElementById("food_results");
 
-// Show error message if no elements in localStorage
-if(food_results.innerHTML == "") {
-    let food_item= document.createElement("p")
-    food_item.innerText=("No food inputs this day.")
-    food_results.appendChild(food_item);
-} 
+        // Show error message if no elements in localStorage
+        if(food_results.innerHTML == "") {
+            let food_item= document.createElement("p")
+            food_item.innerText=("No food inputs this day.")
+            food_results.appendChild(food_item);
+        }
+    } 
 }
+
+//by Ziga: run function once at the start (when script loads) to see today's output when opening page
+meals_output()
 
 // Beni
 // store ITM to local storage
