@@ -55,6 +55,10 @@ var myChart = new Chart(ctx, {
     },
     options: {
         scales: {
+            xAxes: [{               //byZiga: to show X axis inputs in time (not just as a series of bars)
+                type: 'time',
+                distibution: 'linear',
+            }],
             yAxes: [{
                 ticks: {
                     beginAtZero: true
