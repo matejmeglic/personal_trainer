@@ -80,6 +80,8 @@ let var_kcal = document.getElementById("kcal");
 let meal_result = document.getElementById("meal_result");  //2019-12-08 added to show Success message!
 let food_input = []; //storage for all foods - replace with local storage
 
+var_date_time.valueAsDate = new Date();  //byZiga: set today as default date for meal_input 
+
 //eventListeners
 let btn_save = document.getElementById("btn_save");
 btn_save.addEventListener("click", function(){meal_input();});
@@ -110,6 +112,10 @@ function meal_input() {
     if (var_date_time.value == date_input.value) {  //byZiga: added this check to not run function if not necessary (only change meal output if same day was already picked for meal output)
         meals_output()  //byZiga: here I removed date in brackets because it caused adding meals from different days together
     }
+
+    // byZiga: erase Succes message after 3 seconds
+    setTimeout(function(){meal_result.innerText = '';}, 3000);
+
 };
 
 // Ziga
@@ -190,6 +196,8 @@ let height_2= height_user.value*height_user.value;
 let itm_results = document.getElementById("itm_results");
 let itm_input = [];
 
+date_itm.valueAsDate = new Date();   //byZiga: set today as default date for itm innput date
+
 //calculation of ITM
 let itm_user=Math.floor((weight_user.value/height_2)*10000);
 let itm_measurement = {date_itm:date_itm.value, itm_user:itm_user}; // watch out, itm_user is calculated in JS and is not .value
@@ -211,10 +219,15 @@ if (localStorage.getItem("itm") == undefined) {
     console.log("another ITM in DB!");
     console.log(itm_input);
 }
-// show results and refresh chart
+// show results
 itm_results.innerText = `Your ITM ${itm_user} was successfully stored in DB.`;
+// byZiga: erase Succes message after 3 seconds
+setTimeout(function(){itm_results.innerText = '';}, 3000);
+// refresh chart
 plotChart()
 });
+
+
 
 
 // 2019-12-08 Load dummy data for testing
